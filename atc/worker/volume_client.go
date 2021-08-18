@@ -1,6 +1,7 @@
 package worker
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"time"
@@ -233,7 +234,7 @@ func (c *volumeClient) FindVolumeForResourceCache(
 		return nil, false, nil
 	}
 
-	bcVolume, found, err := c.baggageclaimClient.LookupVolume(logger, dbVolume.Handle())
+	bcVolume, found, err := c.baggageclaimClient.LookupVolume(context.TODO(), dbVolume.Handle())
 	if err != nil {
 		logger.Error("failed-to-lookup-volume-in-bc", err)
 		return nil, false, err
@@ -349,7 +350,7 @@ func (c *volumeClient) FindVolumeForTaskCache(
 		return nil, false, nil
 	}
 
-	bcVolume, found, err := c.baggageclaimClient.LookupVolume(logger, dbVolume.Handle())
+	bcVolume, found, err := c.baggageclaimClient.LookupVolume(context.TODO(), dbVolume.Handle())
 	if err != nil {
 		logger.Error("failed-to-lookup-volume-in-bc", err)
 		return nil, false, err
@@ -373,7 +374,7 @@ func (c *volumeClient) LookupVolume(logger lager.Logger, handle string) (Volume,
 		return nil, false, nil
 	}
 
-	bcVolume, found, err := c.baggageclaimClient.LookupVolume(logger, handle)
+	bcVolume, found, err := c.baggageclaimClient.LookupVolume(context.TODO(), handle)
 	if err != nil {
 		logger.Error("failed-to-lookup-volume-in-bc", err)
 		return nil, false, err
@@ -402,7 +403,7 @@ func (c *volumeClient) findOrCreateVolume(
 		logger = logger.WithData(lager.Data{"volume": createdVolume.Handle()})
 
 		bcVolume, bcVolumeFound, err := c.baggageclaimClient.LookupVolume(
-			logger.Session("lookup-volume"),
+			context.TODO(),
 			createdVolume.Handle(),
 		)
 		if err != nil {
@@ -449,7 +450,7 @@ func (c *volumeClient) findOrCreateVolume(
 	defer lock.Release()
 
 	bcVolume, bcVolumeFound, err := c.baggageclaimClient.LookupVolume(
-		logger.Session("create-volume"),
+		context.TODO(),
 		creatingVolume.Handle(),
 	)
 	if err != nil {
@@ -463,7 +464,7 @@ func (c *volumeClient) findOrCreateVolume(
 		logger.Debug("creating-real-volume")
 
 		bcVolume, err = c.baggageclaimClient.CreateVolume(
-			logger.Session("create-volume"),
+			context.TODO(),
 			creatingVolume.Handle(),
 			volumeSpec.baggageclaimVolumeSpec(),
 		)

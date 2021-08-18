@@ -83,11 +83,11 @@ func (v *volume) Handle() string { return v.bcVolume.Handle() }
 func (v *volume) Path() string { return v.bcVolume.Path() }
 
 func (v *volume) SetProperty(key string, value string) error {
-	return v.bcVolume.SetProperty(key, value)
+	return v.bcVolume.SetProperty(context.TODO(), key, value)
 }
 
 func (v *volume) SetPrivileged(privileged bool) error {
-	return v.bcVolume.SetPrivileged(privileged)
+	return v.bcVolume.SetPrivileged(context.TODO(), privileged)
 }
 
 func (v *volume) StreamIn(ctx context.Context, path string, encoding baggageclaim.Encoding, tarStream io.Reader) error {
@@ -115,7 +115,7 @@ func (v *volume) StreamP2pOut(ctx context.Context, path string, destUrl string, 
 }
 
 func (v *volume) Properties() (baggageclaim.VolumeProperties, error) {
-	return v.bcVolume.Properties()
+	return v.bcVolume.Properties(context.TODO())
 }
 
 func (v *volume) WorkerName() string {
@@ -123,7 +123,7 @@ func (v *volume) WorkerName() string {
 }
 
 func (v *volume) Destroy() error {
-	return v.bcVolume.Destroy()
+	return v.bcVolume.Destroy(context.TODO())
 }
 
 func (v *volume) COWStrategy() baggageclaim.COWStrategy {
