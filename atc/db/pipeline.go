@@ -719,11 +719,8 @@ func (p *pipeline) archive(tx Tx) error {
 		return err
 	}
 
-	for _, table := range pipelineObjectTables {
-		err = clearConfigForPipelineObject(tx, p.id, table)
-		if err != nil {
-			return err
-		}
+	if err := resetDependentTableStates(tx, p.id); err != nil {
+		return err
 	}
 
 	return nil
