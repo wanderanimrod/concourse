@@ -10,4 +10,4 @@ jobs:
               repository: mingrammer/flog
           run:
             path: flog
-            args: [ "-n", "100000"]
+            args: ["-n", "100000"] # 100k plain log lines create noticable lag on a locally runing concourse when logs are loaded in the web ui.
