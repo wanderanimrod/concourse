@@ -1,0 +1,13 @@
+jobs:
+  - name: spit-logs
+    plan:
+      - task: spit
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: mingrammer/flog
+          run:
+            path: flog
+            args: [ "-n", "10"]
